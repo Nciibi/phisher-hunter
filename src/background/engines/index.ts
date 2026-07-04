@@ -113,7 +113,7 @@ export class EngineManager {
     return { engineResults: results, ensembleResult }
   }
 
-  async analyze(context: EngineContext, engineIds?: string[]): Promise<EngineResult[]> {
+  async analyze(context: EngineContext, engineIds?: string[]): Promise<{ engineResults: EngineResult[]; ensembleResult: EnsembleResult }> {
     if (engineIds) {
       const results: EngineResult[] = []
       for (const id of engineIds) {
@@ -122,7 +122,8 @@ export class EngineManager {
           results.push(await engine.analyze(context))
         }
       }
-      return results
+      const ensembleResult = this.ensemble.computeEnsemble(results)
+      return { engineResults: results, ensembleResult }
     }
     return this.analyzeAll(context)
   }
