@@ -79,22 +79,15 @@ export class RiskEngine {
         name: e.engineName,
         description: e.reasons[0] || 'No specific reason',
         score: e.score,
-        weight: e.engineId === 'phishing-feeds' ? 0.15 :
-                e.engineId === 'url-reputation' ? 0.15 :
-                e.engineId === 'typosquatting' ? 0.12 :
-                e.engineId === 'credential-harvesting' ? 0.12 :
-                e.engineId === 'brand-impersonation' ? 0.12 :
-                e.engineId === 'homograph' ? 0.10 :
-                e.engineId === 'unicode-attack' ? 0.10 :
-                e.engineId === 'form-destination' ? 0.10 :
-                e.engineId === 'certificate' ? 0.10 :
-                e.engineId === 'domain-age' ? 0.08 :
-                e.engineId === 'javascript-heuristics' ? 0.08 :
-                e.engineId === 'html-structure' ? 0.08 :
-                e.engineId === 'redirection-chain' ? 0.08 :
-                e.engineId === 'suspicious-tld' ? 0.05 :
-                e.engineId === 'hidden-iframe' ? 0.05 :
-                e.engineId === 'password-field' ? 0.05 : 0.05,
+        weight: e.engineId === 'credential-canary' ? 0.18 :
+                e.engineId === 'visual-fingerprint' ? 0.15 :
+                e.engineId === 'language-matrix' ? 0.13 :
+                e.engineId === 'url-entropy' ? 0.12 :
+                e.engineId === 'temporal-clustering' ? 0.12 :
+                e.engineId === 'css-deception' ? 0.10 :
+                e.engineId === 'script-timeseries' ? 0.10 :
+                e.engineId === 'certificate-anomaly' ? 0.09 :
+                e.engineId === 'interactive-honeypot' ? 0.07 : 0.07,
         contribution: 0,
         risk: getRiskLevel(e.score),
         evidence: e.reasons
