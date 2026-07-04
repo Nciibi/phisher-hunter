@@ -2,7 +2,8 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { resolve } from 'path'
-import { copyFileSync, mkdirSync, existsSync, writeFileSync } from 'fs'
+import { copyFileSync, mkdirSync, existsSync, writeFileSync, readFileSync, renameSync } from 'fs'
+import { dirname } from 'path'
 
 export default defineConfig({
   plugins: [
@@ -14,6 +15,22 @@ export default defineConfig({
         const dist = resolve(__dirname, 'dist')
         const iconsDir = resolve(dist, 'icons')
         if (!existsSync(iconsDir)) mkdirSync(iconsDir, { recursive: true })
+
+        const htmlFiles = ['popup/index.html', 'warning/index.html']
+        for (const file of htmlFiles) {
+          const src = resolve(dist, 'src', file)
+          const dest = resolve(dist, file)
+          if (existsSync(src)) {
+            const destDir = dirname(dest)
+            if (!existsSync(destDir)) mkdirSync(destDir, { recursive: true })
+            let content = readFileSync(src, 'utf-8')
+            content = content.replace(/src="\.\.\/\.\.\//g, 'src="')
+            content = content.replace(/href="\.\.\/\.\.\//g, 'href="')
+            writeFileSync(dest, content)
+            renameSync(src, src + '.bak')
+            try { copyFileSync(dest, src) } catch {}
+          }
+        }
 
         const sizes = [16, 32, 48, 128]
         sizes.forEach((size) => {
