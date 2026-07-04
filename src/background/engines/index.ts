@@ -20,6 +20,7 @@ import { PERFORMANCE_BUDGETS } from '../../shared/constants'
 export class EngineManager {
   private engines: Map<string, DetectionEngine> = new Map()
   private engineOrder: string[] = []
+  private ensemble: EnsembleEngine = new EnsembleEngine()
 
   constructor() {
     this.registerEngines()
@@ -35,7 +36,9 @@ export class EngineManager {
       new ScriptTimeseriesEngine(),
       new CertificateAnomalyEngine(),
       new TemporalClusteringEngine(),
-      new InteractiveHoneypotEngine()
+      new InteractiveHoneypotEngine(),
+      new UrlMLModelEngine(),
+      new DomMLModelEngine()
     ]
 
     for (const engine of engineInstances) {
@@ -44,7 +47,10 @@ export class EngineManager {
     }
   }
 
-  async analyzeAll(context: EngineContext): Promise<EngineResult[]> {
+  async analyzeAll(context: EngineContext): Promise<{
+    engineResults: EngineResult[]
+    ensembleResult: EnsembleResult
+  }> {
     const results: EngineResult[] = []
     const totalStartTime = performance.now()
 
@@ -94,6 +100,8 @@ export class EngineManager {
       }
     }
 
+    const ensembleResult = this.ensemble.computeEnsemble(results)
+
     const totalDuration = performance.now() - totalStartTime
     if (totalDuration > PERFORMANCE_BUDGETS.MAX_ANALYSIS_TIME) {
       console.warn(
@@ -102,7 +110,7 @@ export class EngineManager {
       )
     }
 
-    return results
+    return { engineResults: results, ensembleResult }
   }
 
   async analyze(context: EngineContext, engineIds?: string[]): Promise<EngineResult[]> {
