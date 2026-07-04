@@ -117,8 +117,12 @@ describe('EngineManager Integration', () => {
   })
 
   it('detects homograph attack via all engines', async () => {
-    const cyrillicE = '\u0435' // Cyrillic 'е'
-    const context = createContext(`https://${cyrillicE}xample.com`)
+    const cyrillicE = '\u0435' // Cyrillic 'е' that looks like 'e'
+    const homographDomain = `${cyrillicE}xample.com`
+    const context = createContext(`https://${homographDomain}`, {
+      hostname: homographDomain,
+      domain: homographDomain
+    })
     const results = await manager.analyzeAll(context)
     const homographResult = results.find(r => r.engineId === 'homograph')
     expect(homographResult).toBeDefined()

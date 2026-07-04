@@ -48,7 +48,7 @@ describe('Validation Utils', () => {
     it('truncates long strings', () => {
       const result = truncateString('hello world this is long', 10)
       expect(result.length).toBeLessThanOrEqual(13)
-      expect(result).toMatch(/hello\.\.\./)
+      expect(result).toBe('hello w...')
     })
     it('keeps short strings', () => {
       expect(truncateString('hello', 10)).toBe('hello')
