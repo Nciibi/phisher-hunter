@@ -24,11 +24,16 @@ export default defineConfig({
             const destDir = dirname(dest)
             if (!existsSync(destDir)) mkdirSync(destDir, { recursive: true })
             let content = readFileSync(src, 'utf-8')
-            content = content.replace(/src="\.\.\/\.\.\//g, 'src="')
-            content = content.replace(/href="\.\.\/\.\.\//g, 'href="')
+            content = content.replace(/"\.\.\/\.\.\/chunks\//g, '"chunks/')
+            content = content.replace(/src=["']([^"']+)["']/g, (m, p1) => {
+              if (p1.startsWith('../')) return `src="${p1.replace('../', '')}"`
+              return m
+            })
+            content = content.replace(/href=["']([^"']+)["']/g, (m, p1) => {
+              if (p1.startsWith('../')) return `href="${p1.replace('../', '')}"`
+              return m
+            })
             writeFileSync(dest, content)
-            renameSync(src, src + '.bak')
-            try { copyFileSync(dest, src) } catch {}
           }
         }
 
