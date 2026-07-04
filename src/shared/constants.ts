@@ -1,13 +1,16 @@
-export const EXTENSION_NAME = 'Seagles Shield'
-export const EXTENSION_VERSION = '1.0.0'
+export const EXTENSION_NAME = 'Phisher Hunter'
+export const EXTENSION_VERSION = '2.0.0'
 export const STORAGE_KEYS = {
-  SETTINGS: 'seagles_shield_settings',
-  CACHE: 'seagles_shield_cache',
-  WHITELIST: 'seagles_shield_whitelist',
-  BLACKLIST: 'seagles_shield_blacklist',
-  STATS: 'seagles_shield_stats',
-  ANALYSES: 'seagles_shield_analyses',
-  FEED_DATA: 'seagles_shield_feeds'
+  SETTINGS: 'phisher_hunter_settings',
+  CACHE: 'phisher_hunter_cache',
+  WHITELIST: 'phisher_hunter_whitelist',
+  BLACKLIST: 'phisher_hunter_blacklist',
+  STATS: 'phisher_hunter_stats',
+  ANALYSES: 'phisher_hunter_analyses',
+  FEED_DATA: 'phisher_hunter_feeds',
+  CANARY_STATE: 'phisher_hunter_canary',
+  BRAND_FINGERPRINTS: 'phisher_hunter_fingerprints',
+  CAMPAIGN_DATA: 'phisher_hunter_campaigns'
 } as const
 
 export const CACHE_DEFAULTS = {
@@ -125,7 +128,7 @@ export const KNOWN_PHISHING_FEEDS = [
   'https://raw.githubusercontent.com/datadancer223/fake-news/master/data/phishing_domains.txt'
 ]
 
-export const MESSAGE_ACTION_PREFIX = 'SEAGLES_SHIELD_'
+export const MESSAGE_ACTION_PREFIX = 'PHISHER_HUNTER_'
 
 export const WARNING_PAGE_URL = chrome.runtime?.getURL?.('/warning.html') ?? 'warning.html'
 
@@ -133,7 +136,9 @@ export const DEBOUNCE_DELAYS = {
   SCAN: 300,
   NAVIGATION: 500,
   INPUT: 200,
-  SETTINGS_SAVE: 500
+  SETTINGS_SAVE: 500,
+  MUTATION_OBSERVER: 100,
+  CANARY_INJECT: 50
 } as const
 
 export const PERFORMANCE_BUDGETS = {
@@ -143,6 +148,8 @@ export const PERFORMANCE_BUDGETS = {
   MAX_POPUP_LOAD: 200,
   MAX_MEMORY_CACHE_ITEMS: 500
 } as const
+
+// --- NOVEL TECHNIQUE CONSTANTS ---
 
 export const HOMOGLITCH_CHARACTERS = new Set([
   '\u0430', '\u0435', '\u043E', '\u0440', '\u0441', '\u0443',
@@ -166,3 +173,136 @@ export const HIGH_RISK_TLDS = new Set([
   '.science', '.party', '.accountant', '.country', '.stream',
   '.gdn', '.mom', '.rest', '.host', '.press', '.cyou', '.icu'
 ])
+
+// --- NOVEL: Credential Canary ---
+export const CANARY_FIELD_NAMES = [
+  'ph_username_verify',
+  'ph_canary_token',
+  'ph_security_check',
+  'ph_verify_field',
+  'ph_honeypot_email'
+]
+
+export const CANARY_FIELD_STYLES = {
+  position: 'absolute',
+  left: '-9999px',
+  top: '-9999px',
+  width: '1px',
+  height: '1px',
+  opacity: '0',
+  overflow: 'hidden',
+  zIndex: '-1'
+} as const
+
+// --- NOVEL: URL Entropy thresholds ---
+export const URL_ENTROPY_THRESHOLDS = {
+  SUBDOMAIN_HIGH: 3.5,
+  PATH_HIGH: 4.0,
+  QUERY_HIGH: 4.5,
+  OVERALL_HIGH: 3.8
+} as const
+
+// --- NOVEL: Phishing Language Patterns ---
+export const PHISHING_NGRAM_PATTERNS: Record<string, RegExp[]> = {
+  urgency: [
+    /act\s+(now|immediately|quickly)/i,
+    /limited\s+time/i,
+    /expires?\s+(soon|today|now)/i,
+    /immediate\s+(action|attention|response)/i,
+    /urgent/i,
+    /time\s+(sensitive|critical|crucial)/i,
+    /don'?t\s+(miss|lose|delay)/i,
+    /last\s+(chance|warning|notice)/i,
+    /final\s+(notice|reminder|warning)/i
+  ],
+  authority: [
+    /security\s+(team|department|center)/i,
+    /account\s+(management|team|services)/i,
+    /support\s+(team|center|department)/i,
+    /help\s+(desk|center)/i,
+    /administrat/i,
+    /official\s+(notice|notification|communication)/i,
+    /legal\s+(department|notice|action)/i
+  ],
+  threat: [
+    /suspended/i,
+    /terminated/i,
+    /disabled/i,
+    /restricted/i,
+    /deactivated/i,
+    /blocked/i,
+    /compromised/i,
+    /unauthorized\s+(access|login|activity)/i,
+    /security\s+(breach|incident|violation)/i,
+    /fraudulent\s+(activity|transaction|login)/i
+  ],
+  reward: [
+    /won\s+/i,
+    /winner/i,
+    /congratulations/i,
+    /prize/i,
+    /lottery/i,
+    /inheritance/i,
+    /grant\s+/i,
+    /compensation/i,
+    /settlement/i,
+    /unclaimed/i
+  ],
+  credential: [
+    /verify\s+(your|the)\s+(account|identity|information)/i,
+    /confirm\s+(your|the)\s+(account|details|information)/i,
+    /update\s+(your|the)\s+(account|details|information|password)/i,
+    /sign\s+in\s+(to|here)\s+(verify|confirm|update)/i,
+    /login\s+(to|here)\s+(verify|confirm|update)/i,
+    /account\s+(verification|confirmation|validation)/i,
+    /provide\s+(your|the)\s+(credentials|password|information)/i
+  ]
+}
+
+// --- NOVEL: CSS Deception Patterns ---
+export const CSS_DECEPTION_PATTERNS = [
+  { pattern: /opacity\s*:\s*0/i, weight: 0.15, name: 'zero-opacity' },
+  { pattern: /opacity\s*:\s*0\.\d{1,2}\s*;?/i, weight: 0.08, name: 'low-opacity' },
+  { pattern: /visibility\s*:\s*hidden/i, weight: 0.15, name: 'visibility-hidden' },
+  { pattern: /display\s*:\s*none/i, weight: 0.1, name: 'display-none' },
+  { pattern: /text-indent\s*:\s*-\d{4,}/i, weight: 0.12, name: 'text-indent-offscreen' },
+  { pattern: /position\s*:\s*(fixed|absolute)\s*;[^}]*z-index\s*:\s*\d{4,}/i, weight: 0.2, name: 'high-z-index-overlay' },
+  { pattern: /clip\s*:\s*rect\([^)]*\)/i, weight: 0.1, name: 'clip-hide' },
+  { pattern: /overflow\s*:\s*hidden\s*;[^}]*height\s*:\s*0/i, weight: 0.1, name: 'overflow-hide' },
+  { pattern: /transform\s*:\s*(scale|translate)\([^)]*\)-?\d{4,}/i, weight: 0.12, name: 'transform-offscreen' },
+  { pattern: /pointer-events\s*:\s*none/i, weight: 0.05, name: 'pointer-events-none' },
+  { pattern: /filter\s*:\s*blur\(\d+px\)/i, weight: 0.05, name: 'blur-filter' }
+]
+
+// --- NOVEL: DOM Fingerprint elements ---
+export const FINGERPRINT_TAG_WEIGHTS: Record<string, number> = {
+  form: 10,
+  input: 5,
+  'input[type="password"]': 15,
+  button: 3,
+  a: 1,
+  img: 2,
+  iframe: 8,
+  script: 4,
+  meta: 2,
+  div: 0.5,
+  span: 0.3
+}
+
+// --- NOVEL: Temporal clustering ---
+export const CAMPAIGN_TIME_WINDOW_MS = 7 * 24 * 60 * 60 * 1000
+export const CAMPAIGN_SIMILARITY_THRESHOLD = 0.7
+
+// --- NOVEL: Script behavior monitoring ---
+export const SCRIPT_MONITOR_WINDOW_MS = 5000
+export const MAX_MUTATIONS_PER_WINDOW = 100
+export const SUSPICIOUS_MUTATION_PATTERNS = [
+  { pattern: /form/i, type: 'form-creation' },
+  { pattern: /input/i, type: 'input-creation' },
+  { pattern: /password/i, type: 'password-reference' },
+  { pattern: /submit/i, type: 'submit-handler' },
+  { pattern: /fetch|XMLHttpRequest/i, type: 'network-request' },
+  { pattern: /addEventListener/i, type: 'event-listener' },
+  { pattern: /location/i, type: 'location-access' },
+  { pattern: /cookie/i, type: 'cookie-access' }
+]
