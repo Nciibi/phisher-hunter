@@ -19,9 +19,10 @@ export default defineConfig({
         const sizes = [16, 32, 48, 128]
         sizes.forEach((size) => {
           const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-            <rect width="${size}" height="${size}" rx="${size * 0.2}" fill="#1a73e8"/>
-            <text x="${size / 2}" y="${size * 0.68}" text-anchor="middle" fill="white" font-size="${size * 0.6}" font-family="Arial" font-weight="bold">S</text>
-            <path d="M${size * 0.25} ${size * 0.75} L${size * 0.75} ${size * 0.75} L${size * 0.5} ${size * 0.85} Z" fill="#34a853" opacity="0.8"/>
+            <defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#dc2626"/><stop offset="100%" style="stop-color:#991b1b"/></linearGradient></defs>
+            <rect width="${size}" height="${size}" rx="${size * 0.2}" fill="url(#g)"/>
+            <text x="${size / 2}" y="${size * 0.68}" text-anchor="middle" fill="white" font-size="${size * 0.55}" font-family="Arial" font-weight="bold">PH</text>
+            <path d="M${size * 0.15} ${size * 0.78} L${size * 0.85} ${size * 0.78} L${size * 0.5} ${size * 0.92} Z" fill="#fbbf24" opacity="0.9"/>
           </svg>`
           writeFileSync(resolve(iconsDir, `icon${size}.svg`), svg)
         })
