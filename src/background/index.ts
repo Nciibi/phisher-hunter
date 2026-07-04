@@ -6,7 +6,7 @@ import type { AnalysisResult, RiskLevel } from '../shared/types/analysis'
 import { getRiskLevel, getRiskColor } from '../shared/types/analysis'
 import type { ExtensionMessage, ExtensionResponse, AnalyzeUrlPayload, WarningPageData, ExtensionStats, EngineStatus } from '../shared/types/messages'
 import { getDomain, getHostname, getTLD, getSubdomains, getRegistrableDomain } from '../shared/utils/url'
-import { DEBOUNCE_DELAYS, PERFORMANCE_BUDGETS, WARNING_PAGE_URL } from '../shared/constants'
+import { DEBOUNCE_DELAYS, PERFORMANCE_BUDGETS, WARNING_PAGE_URL, EXTENSION_NAME } from '../shared/constants'
 
 const engineManager = new EngineManager()
 const riskEngine = new RiskEngine()
@@ -337,7 +337,7 @@ async function handleMessage(
 
       case 'REPORT_PHISHING': {
         const payload = message.payload as { url: string }
-        console.log('[Seagles Shield] Phishing report submitted:', payload.url)
+        console.log('[Phisher Hunter] Phishing report submitted:', payload.url)
         respond({ success: true, message: 'Thank you for your report. It will help protect other users.' })
         break
       }

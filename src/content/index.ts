@@ -1,6 +1,6 @@
 import type { EngineContext, FormInfo, IframeInfo, FormFieldInfo } from '../shared/types/engines'
 import type { ExtensionMessage, WarningPageData } from '../shared/types/messages'
-import { MESSAGE_ACTION_PREFIX } from '../shared/constants'
+import { MESSAGE_ACTION_PREFIX, EXTENSION_NAME } from '../shared/constants'
 
 let pageData: Partial<EngineContext> = {}
 let warningOverlay: HTMLDivElement | null = null
@@ -205,7 +205,7 @@ function setupMessageListener(): void {
     _sender,
     sendResponse
   ) => {
-    if (message.type === 'SEAGLES_SHIELD_SHOW_WARNING') {
+    if (message.type === 'PHISHER_HUNTER_SHOW_WARNING') {
       const data = message.payload as WarningPageData
       showWarningOverlay(data)
       sendResponse({ success: true })

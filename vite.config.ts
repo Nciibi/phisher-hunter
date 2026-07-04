@@ -28,9 +28,9 @@ export default defineConfig({
 
         const manifest = {
           manifest_version: 3,
-          name: 'Seagles Shield',
-          version: '1.0.0',
-          description: 'Advanced real-time phishing protection for your browser',
+          name: 'Phisher Hunter',
+          version: '2.0.0',
+          description: 'Next-generation phishing protection with novel detection techniques',
           permissions: [
             'storage',
             'alarms',
