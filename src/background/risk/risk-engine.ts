@@ -167,23 +167,15 @@ export class RiskEngine {
 
   private getEngineWeight(engineId: string): number {
     const weights: Record<string, number> = {
-      'phishing-feeds': 15,
-      'url-reputation': 12,
-      'typosquatting': 12,
-      'credential-harvesting': 12,
-      'brand-impersonation': 12,
-      'homograph': 10,
-      'unicode-attack': 10,
-      'form-destination': 10,
-      'certificate': 10,
-      'domain-age': 8,
-      'javascript-heuristics': 8,
-      'html-structure': 8,
-      'redirection-chain': 8,
-      'suspicious-tld': 5,
-      'hidden-iframe': 5,
-      'password-field': 5,
-      'screenshot-similarity': 10
+      'credential-canary': 18,
+      'visual-fingerprint': 15,
+      'language-matrix': 13,
+      'url-entropy': 12,
+      'temporal-clustering': 12,
+      'css-deception': 10,
+      'script-timeseries': 10,
+      'certificate-anomaly': 9,
+      'interactive-honeypot': 7
     }
     return weights[engineId] || 5
   }
