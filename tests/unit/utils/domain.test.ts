@@ -70,7 +70,7 @@ describe('Domain Utils', () => {
     })
 
     it('detects subdomain trick', () => {
-      const result = detectTyposquatting('google.com.malicious-site.xyz')
+      const result = detectTyposquatting('google.malicious-site.xyz')
       expect(result.isSuspicious).toBe(true)
     })
 

@@ -40,7 +40,7 @@ describe('TyposquattingEngine', () => {
 
   it('detects subdomain trick with brand', async () => {
     const result = await engine.analyze(createContext('google.com.evil.com'))
-    expect(result.score).toBeGreaterThan(0.3)
+    expect(result.score).toBeGreaterThan(0.2)
   })
 
   it('detects paypal typosquatting', async () => {

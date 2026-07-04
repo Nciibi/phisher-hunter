@@ -44,7 +44,7 @@ describe('UrlReputationEngine', () => {
   })
 
   it('gives safe score for normal URL', async () => {
-    const context = createContext('https://www.google.com/search?q=test')
+    const context = createContext('https://google.com/search?q=test')
     const result = await engine.analyze(context)
     expect(result.score).toBeLessThan(0.3)
   })

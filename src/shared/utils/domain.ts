@@ -160,10 +160,16 @@ function checkSubdomainTrick(
   const brandMainDomain = brandDomain.split('.')[0]
   const parts = hostname.split('.')
   const mainPart = parts[parts.length - 2]
-  if (mainPart === brandMainDomain && parts.length > 2) {
-    const secureParts = parts.slice(0, -2)
-    return secureParts.some(p => p.includes(brandMainDomain))
+  const secureParts = parts.slice(0, -2)
+
+  if (secureParts.some(p => p.toLowerCase() === brandMainDomain.toLowerCase())) {
+    return true
   }
+
+  if (mainPart === brandMainDomain && secureParts.length > 0) {
+    return true
+  }
+
   return false
 }
 
