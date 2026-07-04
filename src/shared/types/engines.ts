@@ -86,23 +86,15 @@ export interface EngineWeightConfig {
 }
 
 export const DEFAULT_ENGINE_WEIGHTS: EngineWeightConfig[] = [
-  { id: 'url-reputation', enabled: true, weight: 15, threshold: 0.5 },
-  { id: 'domain-age', enabled: true, weight: 8, threshold: 0.4 },
-  { id: 'typosquatting', enabled: true, weight: 12, threshold: 0.5 },
-  { id: 'homograph', enabled: true, weight: 10, threshold: 0.4 },
-  { id: 'unicode-attack', enabled: true, weight: 10, threshold: 0.4 },
-  { id: 'suspicious-tld', enabled: true, weight: 5, threshold: 0.6 },
-  { id: 'certificate', enabled: true, weight: 10, threshold: 0.5 },
-  { id: 'phishing-feeds', enabled: true, weight: 15, threshold: 0.3 },
-  { id: 'javascript-heuristics', enabled: true, weight: 8, threshold: 0.5 },
-  { id: 'credential-harvesting', enabled: true, weight: 12, threshold: 0.4 },
-  { id: 'hidden-iframe', enabled: true, weight: 5, threshold: 0.5 },
-  { id: 'password-field', enabled: true, weight: 5, threshold: 0.6 },
-  { id: 'brand-impersonation', enabled: true, weight: 12, threshold: 0.4 },
-  { id: 'html-structure', enabled: true, weight: 8, threshold: 0.5 },
-  { id: 'form-destination', enabled: true, weight: 10, threshold: 0.4 },
-  { id: 'redirection-chain', enabled: true, weight: 8, threshold: 0.5 },
-  { id: 'screenshot-similarity', enabled: false, weight: 10, threshold: 0.5 }
+  { id: 'credential-canary', enabled: true, weight: 18, threshold: 0.4 },
+  { id: 'visual-fingerprint', enabled: true, weight: 15, threshold: 0.4 },
+  { id: 'language-matrix', enabled: true, weight: 13, threshold: 0.4 },
+  { id: 'url-entropy', enabled: true, weight: 12, threshold: 0.5 },
+  { id: 'temporal-clustering', enabled: true, weight: 12, threshold: 0.5 },
+  { id: 'css-deception', enabled: true, weight: 10, threshold: 0.5 },
+  { id: 'script-timeseries', enabled: true, weight: 10, threshold: 0.5 },
+  { id: 'certificate-anomaly', enabled: true, weight: 9, threshold: 0.5 },
+  { id: 'interactive-honeypot', enabled: true, weight: 7, threshold: 0.5 }
 ]
 
 export type EngineId = typeof DEFAULT_ENGINE_WEIGHTS[number]['id']
