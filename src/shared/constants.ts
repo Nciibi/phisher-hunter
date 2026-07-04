@@ -306,3 +306,47 @@ export const SUSPICIOUS_MUTATION_PATTERNS = [
   { pattern: /location/i, type: 'location-access' },
   { pattern: /cookie/i, type: 'cookie-access' }
 ]
+
+// --- ML Model paths ---
+export const ML_MODEL_PATHS = {
+  URL_CNN: 'models/url-cnn/model.json',
+  DOM_CLASSIFIER: 'models/dom-classifier/model.json',
+  ENSEMBLE_WEIGHTS: 'models/ensemble/weights.json',
+  URL_TOKENIZER: 'models/url-cnn/tokenizer.json',
+  DOM_TFIDF: 'models/dom-classifier/tfidf_config.json'
+} as const
+
+export const ML_DEFAULTS = {
+  URL_MODEL_MAX_LENGTH: 200,
+  DOM_MODEL_VOCAB_SIZE: 5000,
+  DOM_MODEL_MAX_TEXT_LENGTH: 10000,
+  URL_MODEL_THRESHOLD: 0.5,
+  DOM_MODEL_THRESHOLD: 0.5,
+  ENSEMBLE_CONFIDENCE_THRESHOLD: 0.3,
+  BLOOM_FILTER_EXPECTED_ITEMS: 400000,
+  BLOOM_FILTER_FP_RATE: 0.015,
+  FEED_UPDATE_INTERVAL_MS: 1800000
+} as const
+
+export const SUSPICIOUS_TLDS_ML = new Set([
+  '.tk', '.ml', '.ga', '.cf', '.gq', '.xyz', '.top', '.club',
+  '.work', '.review', '.win', '.bid', '.life', '.download',
+  '.stream', '.racing', '.party', '.faith', '.date', '.loan',
+  '.men', '.accountant', '.country', '.mom', '.lol', '.pics',
+  '.gdn', '.host', '.press', '.website', '.space', '.tech',
+  '.fun', '.icu', '.cyou'
+])
+
+export const KNOWN_URL_SHORTENERS = [
+  'bit.ly', 'tinyurl', 'goo.gl', 'shorturl', 't.co', 'ow.ly',
+  'is.gd', 'buff.ly', 'rb.gy', 'tiny.cc', 'bitly.com',
+  'shorturl.at', 'cut.ly', 'rebrand.ly'
+]
+
+export const PHISHING_KEYWORD_CATEGORIES = {
+  urgency: ['urgent', 'immediately', 'suspended', 'limited', 'expires soon', 'action required', 'time sensitive', 'act now', 'last chance', 'final notice'],
+  credential: ['verify', 'password', 'sign in', 'log in', 'credentials', 'account', 'confirm your', 'update your', 'validate', 'authenticate'],
+  threat: ['suspended', 'terminated', 'disabled', 'restricted', 'deactivated', 'blocked', 'compromised', 'unauthorized', 'breach', 'fraudulent'],
+  reward: ['won', 'winner', 'congratulations', 'prize', 'lottery', 'inheritance', 'grant', 'compensation', 'settlement', 'unclaimed'],
+  brand: ['paypal', 'google', 'microsoft', 'apple', 'amazon', 'netflix', 'bank', 'wells fargo', 'chase', 'capital one', 'citi', 'hsbc', 'barclays', 'stripe', 'square', 'ebay', 'walmart', 'target', 'costco', 'best buy']
+} as const
