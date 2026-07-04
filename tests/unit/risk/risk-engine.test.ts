@@ -58,13 +58,13 @@ describe('RiskEngine', () => {
   it('correctly weights high-scoring engines', () => {
     const results = [
       makeEngineResult({
-        engineId: 'phishing-feeds',
+        engineId: 'credential-canary',
         score: 1,
         confidence: 0.9,
         risk: 'critical'
       }),
       makeEngineResult({
-        engineId: 'url-reputation',
+        engineId: 'visual-fingerprint',
         score: 0.5,
         confidence: 0.8,
         risk: 'high'
@@ -85,11 +85,11 @@ describe('RiskEngine', () => {
   it('provides recommendations for high risk', () => {
     const results = [
       makeEngineResult({
-        engineId: 'phishing-feeds',
+        engineId: 'credential-canary',
         score: 1,
         confidence: 0.95,
         risk: 'critical',
-        reasons: ['Listed in phishing database']
+        reasons: ['Credential canary triggered']
       })
     ]
 

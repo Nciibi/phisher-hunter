@@ -23,15 +23,15 @@ describe('EngineManager Integration', () => {
     ...overrides
   })
 
-  it('creates all 17 engines', () => {
+  it('creates all 9 engines', () => {
     const engines = manager.getAllEngines()
-    expect(engines).toHaveLength(17)
+    expect(engines).toHaveLength(9)
   })
 
   it('analyzes a safe URL with all engines', async () => {
     const context = createContext('https://www.google.com')
     const results = await manager.analyzeAll(context)
-    expect(results).toHaveLength(17)
+    expect(results).toHaveLength(9)
     results.forEach(result => {
       expect(result.engineId).toBeTruthy()
       expect(typeof result.score).toBe('number')
@@ -57,7 +57,7 @@ describe('EngineManager Integration', () => {
 
   it('provides engine status', () => {
     const status = manager.getEngineStatus()
-    expect(status).toHaveLength(17)
+    expect(status).toHaveLength(9)
     status.forEach(s => {
       expect(s.id).toBeTruthy()
       expect(s.name).toBeTruthy()
@@ -110,7 +110,7 @@ describe('EngineManager Integration', () => {
       iframes: []
     })
     const results = await manager.analyzeAll(context)
-    expect(results).toHaveLength(17)
+    expect(results).toHaveLength(9)
     results.forEach(r => {
       expect(r.error).toBeUndefined()
     })
@@ -124,7 +124,7 @@ describe('EngineManager Integration', () => {
       domain: homographDomain
     })
     const results = await manager.analyzeAll(context)
-    const homographResult = results.find(r => r.engineId === 'homograph')
+    const homographResult = results.find(r => r.engineId === 'visual-fingerprint')
     expect(homographResult).toBeDefined()
     expect(homographResult!.score).toBeGreaterThan(0)
   })
