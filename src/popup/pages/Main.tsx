@@ -15,7 +15,7 @@ export default function MainPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] p-8 text-center">
         <div className="text-6xl mb-4">🛡️</div>
-        <h2 className="text-xl font-semibold mb-2">Seagles Shield</h2>
+        <h2 className="text-xl font-semibold mb-2">Phisher Hunter</h2>
         <p className="text-secondary text-sm">
           Open a webpage to see phishing protection analysis.
         </p>

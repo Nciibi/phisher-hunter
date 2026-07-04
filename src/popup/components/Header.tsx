@@ -13,8 +13,8 @@ export default function Header({ domain, favIcon }: HeaderProps) {
       {favIcon ? (
         <img src={favIcon} alt="" className="w-5 h-5 rounded" />
       ) : (
-        <div className="w-5 h-5 rounded bg-blue-500 flex items-center justify-center text-white text-xs font-bold">
-          S
+        <div className="w-5 h-5 rounded bg-red-600 flex items-center justify-center text-white text-xs font-bold">
+          PH
         </div>
       )}
       <div className="flex-1 min-w-0">
