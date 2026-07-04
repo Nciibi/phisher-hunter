@@ -16,27 +16,6 @@ export default defineConfig({
         const iconsDir = resolve(dist, 'icons')
         if (!existsSync(iconsDir)) mkdirSync(iconsDir, { recursive: true })
 
-        const htmlFiles = ['popup/index.html', 'warning/index.html']
-        for (const file of htmlFiles) {
-          const src = resolve(dist, 'src', file)
-          const dest = resolve(dist, file)
-          if (existsSync(src)) {
-            const destDir = dirname(dest)
-            if (!existsSync(destDir)) mkdirSync(destDir, { recursive: true })
-            let content = readFileSync(src, 'utf-8')
-            content = content.replace(/"\.\.\/\.\.\/chunks\//g, '"chunks/')
-            content = content.replace(/src=["']([^"']+)["']/g, (m, p1) => {
-              if (p1.startsWith('../')) return `src="${p1.replace('../', '')}"`
-              return m
-            })
-            content = content.replace(/href=["']([^"']+)["']/g, (m, p1) => {
-              if (p1.startsWith('../')) return `href="${p1.replace('../', '')}"`
-              return m
-            })
-            writeFileSync(dest, content)
-          }
-        }
-
         const sizes = [16, 32, 48, 128]
         sizes.forEach((size) => {
           const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
@@ -74,7 +53,7 @@ export default defineConfig({
             }
           ],
           action: {
-            default_popup: 'popup/index.html',
+            default_popup: 'popup.html',
             default_icon: {
               16: 'icons/icon16.svg',
               32: 'icons/icon32.svg',
@@ -85,7 +64,7 @@ export default defineConfig({
           },
           web_accessible_resources: [
             {
-              resources: ['warning/index.html', 'icons/*'],
+              resources: ['warning.html', 'icons/*'],
               matches: ['<all_urls>']
             }
           ],
@@ -121,15 +100,15 @@ export default defineConfig({
       input: {
         background: resolve(__dirname, 'src/background/index.ts'),
         content: resolve(__dirname, 'src/content/index.ts'),
-        popup: resolve(__dirname, 'src/popup/index.html'),
-        warning: resolve(__dirname, 'src/warning/index.html')
+        popup: resolve(__dirname, 'popup.html'),
+        warning: resolve(__dirname, 'warning.html')
       },
       output: {
         entryFileNames: '[name]/index.js',
         chunkFileNames: 'chunks/[name]-[hash].js',
         assetFileNames: (assetInfo) => {
           if (assetInfo.name?.endsWith('.css')) return '[name]/style.css'
-          if (assetInfo.name?.includes('.html')) return '[name]/index.html'
+          if (assetInfo.name?.includes('.html')) return '[name].html'
           return 'assets/[name]-[hash][extname]'
         }
       }
