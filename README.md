@@ -1,113 +1,99 @@
-# Seagles Shield 🛡️
+# Phisher Hunter 🎯
 
-Advanced real-time phishing protection browser extension. Protects users from phishing websites, credential harvesting, and online deception attacks.
+**Next-generation phishing detection through novel, never-before-seen techniques.**
 
-## Features
+Not another URL blacklist. Not another domain checker. Phisher Hunter uses 9 proprietary detection engines that think like attackers to catch phishing that everything else misses.
 
-- **17 Detection Engines** - URL reputation, domain age, typosquatting, homograph attacks, Unicode attacks, suspicious TLDs, certificate validation, phishing feeds, JavaScript heuristics, credential harvesting, hidden iframes, password field analysis, brand impersonation, HTML structure, form destination, redirection chain, screenshot similarity
-- **Weighted Risk Scoring** - Professional risk engine with explainable scores
-- **Real-time Analysis** - <15ms average page analysis
-- **Offline Protection** - Local heuristic analysis continues working without internet
-- **Privacy First** - No browsing history collection, no tracking, no telemetry
-- **Professional UI** - Modern, minimal, accessible design with dark/light mode
-- **Chrome Web Store Ready** - Manifest V3 compliant
+## Novel Detection Techniques
 
-## Installation
+### 🎣 Credential Canary
+Invisible honeypot credential fields deployed into every page. Phishing scripts that auto-fill or scrape form fields interact with these decoys, revealing their malicious intent. Legitimate users never see them. **Catches credential harvesters in the act.**
 
-### From Chrome Web Store
-*Coming soon*
+### 👁️ Visual Brand Fingerprinting
+Computes a structural hash of the page DOM and compares it against known legitimate brand page fingerprints. Phishing sites that copy HTML structure of real brands get caught even on custom domains. **Layout matching, not domain matching.**
 
-### From Source
-```bash
-git clone https://github.com/seagles/shield.git
-cd seagles-shield
-npm install
-npm run build
-```
+### 📊 URL Entropy Analysis
+Calculates Shannon entropy of each URL component. Phishing URLs have high-entropy (random-looking) subdomains, paths, and parameters. Also detects base64 segments, UUIDs, and randomly-generated strings. **Statistics don't lie.**
 
-1. Open Chrome and navigate to `chrome://extensions`
-2. Enable "Developer mode"
-3. Click "Load unpacked" and select the `dist/` directory
+### 🎨 CSS Deception Analysis
+Scans stylesheets for visual deception: full-viewport overlays, clickjacking iframes, fake browser chrome, hidden elements, and brand color reproduction. **Catches what the eye can't see.**
 
-## Development
+### 🧠 Phishing Language Pattern Matrix
+N-gram frequency analysis against 5 categories of phishing language: urgency, authority impersonation, threats, rewards, and credential framing. **Reads between the lines.**
 
-```bash
-npm install
-npm run dev          # Watch mode build
-npm run test         # Run tests
-npm run test:coverage # Test with coverage
-npm run lint         # Lint check
-npm run typecheck    # TypeScript check
-npm run build        # Production build
-```
+### ⏱️ Script Behavior Time-series
+Temporal analysis of JavaScript patterns detecting time-delayed phishkits, form action mutations, data exfiltration, and event listener stacking. **Catches delayed-execution attacks.**
+
+### 🔐 Certificate Anomaly Detection
+Beyond basic validation: tracks certificate age, issuance velocity, CA clustering, and subject/domain mismatches. **Phishing certs have tells.**
+
+### 🔗 Temporal Domain Clustering
+Clusters domains by registration patterns to detect coordinated phishing campaigns. Edit-distance matching across observed domains. **Connects the dots between attacks.**
+
+### 🪤 Interactive Honeypot Detection
+Detects hidden interactive elements used by phishers to fingerprint researchers and evade automated analysis. **Turns their tricks against them.**
+
+## Why This Is Different
+
+| Feature | Traditional Extensions | Phisher Hunter |
+|---------|----------------------|----------------|
+| Detection Method | URL blacklists | Behavioral + statistical analysis |
+| Zero-day Protection | Limited | High (anomaly-based) |
+| Offline Capability | Minimal | Full (all engines local) |
+| Evasion Resistance | Low | High (canary + honeypot-aware) |
+| Phishkit Detection | No | Yes (DOM fingerprinting) |
+| Campaign Tracking | No | Yes (temporal clustering) |
+| Language Analysis | No | Yes (pattern matrix) |
 
 ## Architecture
 
 ```
 src/
-├── background/     # Service worker, engines, risk, storage, API
-│   ├── engines/    # 17 detection engines
-│   ├── risk/       # Risk scoring engine
-│   ├── storage/    # Cache & settings management
-│   └── api/        # Rate limiter & retry logic
-├── content/        # Content script (scanner, observers)
-├── popup/          # React popup UI
-├── warning/        # Warning page
-├── shared/         # Types, constants, utilities
-└── worker/         # Web workers
+├── background/
+│   ├── engines/          # 9 novel detection engines
+│   │   ├── credential-canary.ts
+│   │   ├── visual-fingerprint.ts
+│   │   ├── url-entropy.ts
+│   │   ├── css-deception.ts
+│   │   ├── language-matrix.ts
+│   │   ├── script-timeseries.ts
+│   │   ├── certificate-anomaly.ts
+│   │   ├── temporal-clustering.ts
+│   │   └── interactive-honeypot.ts
+│   ├── risk/             # Weighted scoring engine
+│   ├── storage/          # Cache & settings
+│   └── api/              # Rate limiter & retry
+├── content/              # DOM scanner & canary injector
+├── popup/                # React + Tailwind UI
+├── warning/              # Full-page interstitial
+└── shared/               # Types, constants, utils
 ```
 
-## Detection Engines
+## Quick Start
 
-| Engine | Weight | Description |
-|--------|--------|-------------|
-| URL Reputation | 15 | URL structure analysis |
-| Domain Age | 8 | Registration date checking |
-| Typosquatting | 12 | Brand name impersonation |
-| Homograph | 10 | Unicode character attacks |
-| Unicode Attack | 10 | RTL override, zero-width chars |
-| Suspicious TLD | 5 | High-risk domain extensions |
-| Certificate | 10 | SSL/TLS validation |
-| Phishing Feeds | 15 | Known phishing databases |
-| JS Heuristics | 8 | Malicious script patterns |
-| Credential Harvesting | 12 | Login form analysis |
-| Hidden Iframe | 5 | Clickjacking detection |
-| Password Field | 5 | Password security analysis |
-| Brand Impersonation | 12 | Brand page cloning detection |
-| HTML Structure | 8 | Structural anomalies |
-| Form Destination | 10 | Form submission analysis |
-| Redirection Chain | 8 | Redirect obfuscation |
-| Screenshot Similarity | 10 | Visual comparison (future) |
+```bash
+npm install
+npm run build          # Build to dist/
+npm run test           # 73 tests across 5 test files
+npm run test:coverage  # With coverage
+npm run lint           # ESLint
+npm run typecheck      # TypeScript
+```
+
+Load `dist/` unpacked in `chrome://extensions` (Developer mode).
 
 ## Privacy
 
-- No browsing history is collected or uploaded
-- No telemetry unless explicitly enabled
-- Minimal permissions required
-- All analysis happens locally when possible
-- Cache is stored locally and never shared
+- Zero browsing history collection
+- Zero tracking or telemetry
+- All analysis runs locally
+- No external API calls for detection
+- Minimal permissions (storage, alarms, tabs, webNavigation, scripting)
 
-## Security
+## Tech Stack
 
-- Strong CSP policy
-- No eval() or unsafe-inline
-- Input sanitization
-- Least privilege permissions
-- Regular security audits
-
-## Testing
-
-```bash
-# Unit tests
-npm run test
-
-# With coverage
-npm run test:coverage
-
-# Watch mode
-npm run test:watch
-```
+Manifest V3 · TypeScript · React 19 · Tailwind CSS 4 · Vite 8 · Vitest
 
 ## License
 
-MIT License - See [LICENSE](LICENSE) for details.
+MIT
