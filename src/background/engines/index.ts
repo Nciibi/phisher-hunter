@@ -1,20 +1,12 @@
-import { UrlReputationEngine } from './url-reputation'
-import { DomainAgeEngine } from './domain-age'
-import { TyposquattingEngine } from './typosquatting'
-import { HomographEngine } from './homograph'
-import { UnicodeAttackEngine } from './unicode-attack'
-import { SuspiciousTLDEngine } from './suspicious-tld'
-import { CertificateEngine } from './certificate'
-import { PhishingFeedsEngine } from './phishing-feeds'
-import { JavascriptHeuristicsEngine } from './javascript-heuristics'
-import { CredentialHarvestingEngine } from './credential-harvesting'
-import { HiddenIframeEngine } from './hidden-iframe'
-import { PasswordFieldEngine } from './password-field'
-import { BrandImpersonationEngine } from './brand-impersonation'
-import { HtmlStructureEngine } from './html-structure'
-import { FormDestinationEngine } from './form-destination'
-import { RedirectionChainEngine } from './redirection-chain'
-import { ScreenshotSimilarityEngine } from './screenshot-similarity'
+import { CredentialCanaryEngine } from './credential-canary'
+import { VisualFingerprintEngine } from './visual-fingerprint'
+import { UrlEntropyEngine } from './url-entropy'
+import { CssDeceptionEngine } from './css-deception'
+import { LanguageMatrixEngine } from './language-matrix'
+import { ScriptTimeseriesEngine } from './script-timeseries'
+import { CertificateAnomalyEngine } from './certificate-anomaly'
+import { TemporalClusteringEngine } from './temporal-clustering'
+import { InteractiveHoneypotEngine } from './interactive-honeypot'
 import type { DetectionEngine, EngineContext, EngineResult } from '../../shared/types/engines'
 import type { RiskLevel } from '../../shared/types/analysis'
 import { getRiskLevel } from '../../shared/types/analysis'
@@ -30,23 +22,15 @@ export class EngineManager {
 
   private registerEngines(): void {
     const engineInstances: DetectionEngine[] = [
-      new UrlReputationEngine(),
-      new DomainAgeEngine(),
-      new TyposquattingEngine(),
-      new HomographEngine(),
-      new UnicodeAttackEngine(),
-      new SuspiciousTLDEngine(),
-      new CertificateEngine(),
-      new PhishingFeedsEngine(),
-      new JavascriptHeuristicsEngine(),
-      new CredentialHarvestingEngine(),
-      new HiddenIframeEngine(),
-      new PasswordFieldEngine(),
-      new BrandImpersonationEngine(),
-      new HtmlStructureEngine(),
-      new FormDestinationEngine(),
-      new RedirectionChainEngine(),
-      new ScreenshotSimilarityEngine()
+      new CredentialCanaryEngine(),
+      new VisualFingerprintEngine(),
+      new UrlEntropyEngine(),
+      new CssDeceptionEngine(),
+      new LanguageMatrixEngine(),
+      new ScriptTimeseriesEngine(),
+      new CertificateAnomalyEngine(),
+      new TemporalClusteringEngine(),
+      new InteractiveHoneypotEngine()
     ]
 
     for (const engine of engineInstances) {
@@ -108,7 +92,7 @@ export class EngineManager {
     const totalDuration = performance.now() - totalStartTime
     if (totalDuration > PERFORMANCE_BUDGETS.MAX_ANALYSIS_TIME) {
       console.warn(
-        `[Seagles Shield] Analysis took ${Math.round(totalDuration)}ms ` +
+        `[Phisher Hunter] Analysis took ${Math.round(totalDuration)}ms ` +
         `(exceeds budget of ${PERFORMANCE_BUDGETS.MAX_ANALYSIS_TIME}ms)`
       )
     }
@@ -175,30 +159,19 @@ export class EngineManager {
 
   clearAllCaches(): void {
     for (const engine of this.engines.values()) {
-      if (engine instanceof DomainAgeEngine) {
-        engine.clearCache()
-      }
-      if (engine instanceof PhishingFeedsEngine) {
-        engine.clearCache()
+      if (typeof (engine as any).clearCache === 'function') {
+        ;(engine as any).clearCache()
       }
     }
   }
 }
 
-export * from './url-reputation'
-export * from './domain-age'
-export * from './typosquatting'
-export * from './homograph'
-export * from './unicode-attack'
-export * from './suspicious-tld'
-export * from './certificate'
-export * from './phishing-feeds'
-export * from './javascript-heuristics'
-export * from './credential-harvesting'
-export * from './hidden-iframe'
-export * from './password-field'
-export * from './brand-impersonation'
-export * from './html-structure'
-export * from './form-destination'
-export * from './redirection-chain'
-export * from './screenshot-similarity'
+export * from './credential-canary'
+export * from './visual-fingerprint'
+export * from './url-entropy'
+export * from './css-deception'
+export * from './language-matrix'
+export * from './script-timeseries'
+export * from './certificate-anomaly'
+export * from './temporal-clustering'
+export * from './interactive-honeypot'
