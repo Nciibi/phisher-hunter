@@ -32,6 +32,9 @@ export interface EngineContext {
   certificates?: CertificateData[]
   documentProps?: DocumentProperties
   tabId?: number
+  pageText?: string
+  urlTokenIds?: Uint32Array
+  enableML?: boolean
 }
 
 export interface FormInfo {
