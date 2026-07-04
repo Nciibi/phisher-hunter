@@ -127,7 +127,7 @@ export const KNOWN_PHISHING_FEEDS = [
 
 export const MESSAGE_ACTION_PREFIX = 'SEAGLES_SHIELD_'
 
-export const WARNING_PAGE_URL = chrome.runtime?.getURL?.('/warning/index.html') ?? 'warning/index.html'
+export const WARNING_PAGE_URL = chrome.runtime?.getURL?.('/warning.html') ?? 'warning.html'
 
 export const DEBOUNCE_DELAYS = {
   SCAN: 300,
