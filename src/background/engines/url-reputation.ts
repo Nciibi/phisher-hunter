@@ -65,9 +65,11 @@ export class UrlReputationEngine extends BaseEngine {
       reasons.push('URL contains @ symbol, may be attempting to hide true destination')
     }
 
-    if (fullUrl.includes('//') && fullUrl.indexOf('//') !== fullUrl.indexOf('://') + 2) {
+    const protocolEnd = fullUrl.indexOf('://') + 3
+    const afterProtocol = fullUrl.slice(protocolEnd)
+    if (afterProtocol.includes('//')) {
       score += 0.3
-      reasons.push('URL contains multiple slash sequences, possible redirection trick')
+      reasons.push('URL contains multiple slash sequences after protocol, possible redirection trick')
     }
 
     if (fullUrl.includes('%')) {
